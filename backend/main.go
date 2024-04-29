@@ -12,6 +12,7 @@ func main() {
 	db.Connect("mongodb://localhost:27017")
 
 	http.HandleFunc("/users", handlers.GetUsersHandler)
+	http.HandleFunc("/delete-user", handlers.DeleteUserHandler)
 
 	fmt.Println("Server starting on port 8080...")
 	log.Fatal(http.ListenAndServe(":8080", nil))

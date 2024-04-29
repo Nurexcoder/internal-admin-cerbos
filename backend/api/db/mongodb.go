@@ -53,3 +53,17 @@ func GetUsers() ([]models.User, error) {
 
 	return users, nil
 }
+
+func DeleteUser(username string) error {
+	collection := Client.Database("testdb").Collection("users")
+	filter := bson.M{"username": username}
+
+	_, err := collection.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	fmt.Printf("User with username %s deleted successfully\n", username)
+	return nil
+}
