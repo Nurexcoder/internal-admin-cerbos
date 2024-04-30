@@ -13,8 +13,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// Client holds the MongoDB client used to interact with the database.
 var Client *mongo.Client
 
+// Connect establishes a connection to the MongoDB database specified by the uri.
 func Connect(uri string) {
 	clientOptions := options.Client().ApplyURI(uri)
 	var err error
@@ -34,6 +36,7 @@ func Connect(uri string) {
 	fmt.Println("Connected to MongoDB!")
 }
 
+// GetUsers retrieves all users from the MongoDB database.
 func GetUsers() ([]models.User, error) {
 	var users []models.User
 	collection := Client.Database("testdb").Collection("users")
@@ -54,6 +57,7 @@ func GetUsers() ([]models.User, error) {
 	return users, nil
 }
 
+// DeleteUser removes a user with the specified username from the database.
 func DeleteUser(username string) error {
 	collection := Client.Database("testdb").Collection("users")
 	filter := bson.M{"username": username}
