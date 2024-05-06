@@ -41,7 +41,7 @@ body {
 }
 
 .App-logo {
-  width: 3rem;
+  width: 10rem;
 }
 
 /* User List */
@@ -147,6 +147,8 @@ table tr:last-child td:last-child {
   gap: 1rem;
   align-items: center;
   margin-bottom: 0.5rem;
+  background-color: #ffbf00; /* Golden yellow */
+  color: #333; /* Dark text color for contrast */
 }
 
 .sidebar-elements:hover {

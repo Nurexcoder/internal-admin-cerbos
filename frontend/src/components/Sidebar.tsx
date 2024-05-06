@@ -4,17 +4,17 @@ const Sidebar = () => {
   return (
     <nav className="sidebar">
       <ul>
-        <li className="sidebar-elements" style={{backgroundColor: '#362259'}}>
-          <IconUsers/>
+        <li className="sidebar-elements" style={{ backgroundColor: "#FFBF00" }}>
+          <IconUsers />
           <div>Users</div>
         </li>
         <li className="sidebar-elements">
-          <IconSettings/>
+          <IconSettings />
           <div>Settings</div>
         </li>
       </ul>
     </nav>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
