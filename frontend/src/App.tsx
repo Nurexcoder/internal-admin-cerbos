@@ -11,14 +11,12 @@ function App() {
   const [userList, setUserList] = useState(users); // Use a different name to avoid conflicts with the users state
   const [role, setRole] = useState<string>("");
 
-  // Simulate getting the user's role (you can remove this if it's not necessary)
-  useEffect(() => {
-    setRole("user");
-  }, []);
+  // Remove the simulated useEffect and initialize the role to empty or a default value.
 
   const handleRoleChange = (selectedRole: string) => {
     setRole(selectedRole); // Update role based on dropdown selection
   };
+
   const handleDelete = async (username: string) => {
     try {
       // Log the role before calling the backend
@@ -36,6 +34,7 @@ function App() {
       console.error(error);
     }
   };
+
   return (
     <div className="app-content">
       <Navbar />
@@ -56,11 +55,8 @@ function App() {
           </select>
           {userList.length !== 0 && (
             <UserTable
-              users={userList.map((user) => ({
-                name: user.name,
-                email: user.email,
-                username: user.username,
-              }))}
+              users={userList}
+              role={role} // Pass role as a prop
               handleDelete={handleDelete}
             />
           )}

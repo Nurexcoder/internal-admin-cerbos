@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import type { User } from "../types/userType";
 import IconSearch from "../assets/search-icon";
 
 interface UserTableProps {
   users: User[];
-  handleDelete: (username: string, role: string) => Promise<void>;
+  role: string; // Receive role as a prop
+  handleDelete: (username: string) => Promise<void>; // No need to pass role here
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users, handleDelete }) => {
+const UserTable: React.FC<UserTableProps> = ({ users, role, handleDelete }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [role, setRole] = useState("intern");
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -18,9 +18,10 @@ const UserTable: React.FC<UserTableProps> = ({ users, handleDelete }) => {
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   const handleDeleteClick = async (username: string) => {
     console.log(`Trying to delete ${username} with role: ${role}`);
-    await handleDelete(username, role);
+    await handleDelete(username);
   };
 
   const isAdmin = role === "CEO" || role === "manager";
@@ -38,23 +39,6 @@ const UserTable: React.FC<UserTableProps> = ({ users, handleDelete }) => {
           onChange={handleSearchChange}
           className="search-input"
         />
-      </div>
-      <div>
-        <label htmlFor="roleDropdown">Select Role:</label>
-        <select
-          id="roleDropdown"
-          value={role}
-          onChange={(e) => {
-            const selectedRole = e.target.value;
-            console.log(`Role selected from dropdown: ${selectedRole}`);
-            setRole(selectedRole);
-          }}
-        >
-          <option value="intern">Intern</option>
-          <option value="executive">Executive</option>
-          <option value="manager">Manager</option>
-          <option value="CEO">CEO</option>
-        </select>
       </div>
       <table className="users-table">
         <thead className="table-heading">

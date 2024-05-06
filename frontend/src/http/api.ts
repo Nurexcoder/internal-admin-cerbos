@@ -22,7 +22,7 @@ export const getUsers = async (role: string) => {
 };
 
 export const deleteUser = async (role: string, username: string) => {
-  // Map "manager" and "CEO" to "admin"
+  // Explicitly map "manager" and "CEO" to "admin"
   const effectiveRole = role === "manager" || role === "CEO" ? "admin" : role;
 
   console.log(`Mapped role: ${effectiveRole}, username: ${username}`);
