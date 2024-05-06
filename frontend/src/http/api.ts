@@ -8,6 +8,52 @@ let users = [
 ];
 
 // Function to check with Cerbos if an action is allowed
+// Function to check with Cerbos if an action is allowed
+
+// Function to fetch users based on the provided role
+export const getUsers = async (role: string) => {
+  const authorized = await isActionAllowed(role, "read", "users", "all_users");
+  if (!authorized) {
+    console.error(`Role ${role} is not authorized to view users`);
+    return [];
+  }
+
+  return users;
+};
+
+export const deleteUser = async (role: string, username: string) => {
+  // Map "manager" and "CEO" to "admin"
+  const effectiveRole = role === "manager" || role === "CEO" ? "admin" : role;
+
+  console.log(`Mapped role: ${effectiveRole}, username: ${username}`);
+
+  const authorized = await isActionAllowed(
+    effectiveRole,
+    "delete",
+    "users",
+    username
+  );
+
+  console.log(`Backend received role after isActionAllowed: ${effectiveRole}`);
+  console.log(`Authorized: ${authorized}`);
+
+  if (!authorized) {
+    console.error(`Role ${effectiveRole} is not authorized to delete users`);
+    return false;
+  }
+
+  const index = users.findIndex((user) => user.username === username);
+  if (index > -1) {
+    users.splice(index, 1);
+    console.log(`User ${username} deleted successfully`);
+    return true;
+  }
+
+  console.error(`User ${username} not found`);
+  return false;
+};
+
+// Function to check with Cerbos if an action is allowed
 const isActionAllowed = async (
   role: string,
   action: string,
@@ -34,6 +80,8 @@ const isActionAllowed = async (
     ],
   };
 
+  console.log(`Sending payload to Cerbos: ${JSON.stringify(payload)}`);
+
   try {
     const response = await fetch("http://localhost:3592/api/check/resources", {
       method: "POST",
@@ -55,35 +103,4 @@ const isActionAllowed = async (
     return false;
   }
 };
-
-// Function to fetch users based on the provided role
-export const getUsers = async (role: string) => {
-  const authorized = await isActionAllowed(role, "read", "users", "all_users");
-  if (!authorized) {
-    console.error(`Role ${role} is not authorized to view users`);
-    return [];
-  }
-
-  return users;
-};
-
-// Function to delete a user by username
-export const deleteUser = async (role: string, username: string) => {
-  const authorized = await isActionAllowed(role, "delete", "users", username);
-  if (!authorized) {
-    console.error(`Role ${role} is not authorized to delete users`);
-    return false;
-  }
-
-  const index = users.findIndex((user) => user.username === username);
-  if (index > -1) {
-    users.splice(index, 1);
-    console.log(`User ${username} deleted successfully`);
-    return true;
-  }
-
-  console.error(`User ${username} not found`);
-  return false;
-};
-
 export default users;

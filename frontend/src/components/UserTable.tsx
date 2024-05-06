@@ -1,22 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { User } from "../types/userType";
 import IconSearch from "../assets/search-icon";
 
 interface UserTableProps {
   users: User[];
-  handleDelete: (username: string) => Promise<void>;
+  handleDelete: (username: string, role: string) => Promise<void>;
 }
 
 const UserTable: React.FC<UserTableProps> = ({ users, handleDelete }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [role, setRole] = useState("intern");
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
   const filteredUsers = users.filter((user) =>
-    user.Name.toLowerCase().includes(searchTerm.toLowerCase())
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const handleDeleteClick = async (username: string) => {
+    console.log(`Trying to delete ${username} with role: ${role}`);
+    await handleDelete(username, role);
+  };
+
+  const isAdmin = role === "CEO" || role === "manager";
 
   return (
     <div className="table-container">
@@ -31,6 +38,23 @@ const UserTable: React.FC<UserTableProps> = ({ users, handleDelete }) => {
           onChange={handleSearchChange}
           className="search-input"
         />
+      </div>
+      <div>
+        <label htmlFor="roleDropdown">Select Role:</label>
+        <select
+          id="roleDropdown"
+          value={role}
+          onChange={(e) => {
+            const selectedRole = e.target.value;
+            console.log(`Role selected from dropdown: ${selectedRole}`);
+            setRole(selectedRole);
+          }}
+        >
+          <option value="intern">Intern</option>
+          <option value="executive">Executive</option>
+          <option value="manager">Manager</option>
+          <option value="CEO">CEO</option>
+        </select>
       </div>
       <table className="users-table">
         <thead className="table-heading">
@@ -50,13 +74,22 @@ const UserTable: React.FC<UserTableProps> = ({ users, handleDelete }) => {
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map((user, ind) => (
-            <tr key={ind} className="table-row">
-              <td className="other-row">{user.Name}</td>
-              <td className="other-row">{user.Email}</td>
-              <td className="other-row">@{user.Username}</td>
+          {filteredUsers.map((user, index) => (
+            <tr key={index} className="table-row">
+              <td className="other-row">{user.name}</td>
+              <td className="other-row">{user.email}</td>
+              <td className="other-row">@{user.username}</td>
               <td className="other-row">
-                <button onClick={() => handleDelete(user.Username)} className="delete-btn">Delete</button>
+                {isAdmin ? (
+                  <button
+                    onClick={() => handleDeleteClick(user.username)}
+                    className="delete-btn"
+                  >
+                    Delete
+                  </button>
+                ) : (
+                  <span>Not Authorized</span>
+                )}
               </td>
             </tr>
           ))}
