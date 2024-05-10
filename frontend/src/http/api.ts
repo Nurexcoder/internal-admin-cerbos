@@ -7,6 +7,8 @@ let users = [
 export const getUsers = async (role: string) => {
   const authorized = await isActionAllowed(role, "read", "users", "all_users");
   if (!authorized) {
+    alert(`Role ${role} is not authorized to view users`);
+
     console.error(`Role ${role} is not authorized to view users`);
     return [];
   }
@@ -31,6 +33,8 @@ export const deleteUser = async (role: string, username: string) => {
   console.log(`Authorized: ${authorized}`);
 
   if (!authorized) {
+    alert(`Role ${effectiveRole} is not authorized to delete user ${username}`);
+
     console.error(`Role ${effectiveRole} is not authorized to delete users`);
     return false;
   }

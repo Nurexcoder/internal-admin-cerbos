@@ -1,0 +1,24 @@
+name: usersTestSuite
+description: Tests for verifying the users resource policy
+tests:
+  - name: users actions
+    input:
+      principals:
+        - user#1
+        - admin#2
+      resources:
+        - users#1
+      actions:
+        - read
+        - delete
+    expected:
+      - resource: users#1
+        principal: user#1
+        actions:
+          read: EFFECT_ALLOW
+          delete: EFFECT_DENY
+      - resource: users#1
+        principal: admin#2
+        actions:
+          read: EFFECT_ALLOW
+          delete: EFFECT_ALLOW

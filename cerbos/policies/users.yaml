@@ -9,12 +9,8 @@ resourcePolicy:
       roles:
         - user
         - admin
-        - manager
-        - CEO
     - actions:
         - delete
       effect: EFFECT_ALLOW
       roles:
         - admin
-        - manager
-        - CEO
