@@ -1,16 +1,9 @@
-// api.ts
-
-// Hardcoded user data
 let users = [
   { name: "John Doe", email: "johndoe@example.com", username: "johndoe" },
   { name: "Jane Smith", email: "janesmith@example.com", username: "janesmith" },
   { name: "Alice Johnson", email: "alicej@example.com", username: "alicej" },
 ];
 
-// Function to check with Cerbos if an action is allowed
-// Function to check with Cerbos if an action is allowed
-
-// Function to fetch users based on the provided role
 export const getUsers = async (role: string) => {
   const authorized = await isActionAllowed(role, "read", "users", "all_users");
   if (!authorized) {
